@@ -8,11 +8,13 @@ export const documentReducer = (
   action
 ) => {
   switch (action.type) {
-    case FETCH_DOCUMENT: {
+    case LOADING_DOCUMENT: {
       return { ...state, loading: true };
     }
     case FETCH_DOCUMENT: {
       return { loading: false, error: null, data: action.payload };
     }
+    default:
+      return state;
   }
 };

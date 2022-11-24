@@ -4,12 +4,17 @@ import {
   FETCH_DOCUMENT,
 } from '../constants/documentConstants';
 
-export const fetchDocument = (payload) => async (dispatch) => {
+export const fetchDocument = (searchText) => async (dispatch) => {
   try {
     dispatch({ type: LOADING_DOCUMENT });
 
-    const { data } = axios;
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_BASE_URL}/api/document/search`,
+      { params: { searchText } }
+    );
 
-    dispatch({ type: ADD_DOCUMENT, payload: data });
+    console.log(data);
+
+    dispatch({ type: FETCH_DOCUMENT, payload: data });
   } catch (error) {}
 };
