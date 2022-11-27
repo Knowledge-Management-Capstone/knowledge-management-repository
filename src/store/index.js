@@ -3,9 +3,11 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { documentReducer } from './reducers/documentReducers';
+import { teamReducer } from './reducers/teamReducers';
 
 const reducer = combineReducers({
   document: documentReducer,
+  team: teamReducer,
 });
 
 const initialState = {};

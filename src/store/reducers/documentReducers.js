@@ -4,15 +4,20 @@ import {
 } from '../constants/documentConstants';
 
 export const documentReducer = (
-  state = { loading: false, error: null, data: {} },
+  state = { documentLoading: false, error: null, documentData: [] },
   action
 ) => {
   switch (action.type) {
     case LOADING_DOCUMENT: {
-      return { ...state, loading: true };
+      return { ...state, documentLoading: true };
     }
     case FETCH_DOCUMENT: {
-      return { loading: false, error: null, data: action.payload };
+      return {
+        ...state,
+        documentLoading: false,
+        error: null,
+        documentData: action.payload,
+      };
     }
     default:
       return state;

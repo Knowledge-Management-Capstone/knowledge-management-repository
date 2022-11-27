@@ -1,13 +1,11 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-
-import { fetchDocument } from '../store/actions/documentActions';
+import { useNavigate } from 'react-router-dom';
 
 import NavigationBar from '../components/common/NavigationBar';
 import InputKeyboard from '../components/generic/form/input/InputKeyboard';
 
 const Home = () => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [searchText, setSearchText] = useState('');
 
   const onChange = (e) => {
@@ -15,7 +13,7 @@ const Home = () => {
   };
 
   const onSearch = () => {
-    dispatch(fetchDocument(searchText));
+    navigate(`/search-results?searchText=${searchText}`);
   };
 
   return (

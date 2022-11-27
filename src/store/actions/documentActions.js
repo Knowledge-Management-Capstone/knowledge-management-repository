@@ -13,8 +13,6 @@ export const fetchDocument = (searchText) => async (dispatch) => {
       { params: { searchText } }
     );
 
-    console.log(data);
-
     dispatch({ type: FETCH_DOCUMENT, payload: data });
   } catch (error) {}
 };
