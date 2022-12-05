@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import {
   DocumentTextIcon,
   CheckCircleIcon,
@@ -8,7 +10,10 @@ import {
 function BaseFileDetail({ data }) {
   const date = data.updatedAt.split('T')[0];
   return (
-    <div className='flex flex-row justify-between py-3 items-center h-44'>
+    <Link
+      to={`/file-detail/${data._id}`}
+      className='flex flex-row justify-between rounded-md py-2 items-center h-44 hover:bg-gray-50 shadow cursor-pointer'
+    >
       <DocumentTextIcon className='h-[90%] basis-1/7' />
       <div className='flex flex-col basis-1/2 justify-around h-full ml-6'>
         <div className='text-2xl font-semibold'>File Name: {data.name}</div>
@@ -17,7 +22,7 @@ function BaseFileDetail({ data }) {
           Description: {data.description}
         </div>
       </div>
-      <div className='flex justify-around items-end flex-col basis-1/4 h-full ml-6'>
+      <div className='flex justify-around items-end flex-col basis-1/4 h-full ml-6 pr-6'>
         <div className='flex flex-row'>
           <div>{data.status}</div>
           <CheckCircleIcon className='w-6 ml-2' />
@@ -31,7 +36,7 @@ function BaseFileDetail({ data }) {
           <ClockIcon className='w-6 ml-2' />
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 

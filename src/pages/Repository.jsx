@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import NavigationBar from '../components/common/NavigationBar';
@@ -8,16 +8,33 @@ import Sidebar from '../components/common/Sidebar';
 import BaseCard from '../components/generic/card/BaseCard';
 import Footer from '../components/common/Footer';
 
-import { fetchTeam, fetchSingleTeam } from '../store/actions/teamActions';
+import {
+  fetchFolder,
+  fetchSingleRepository,
+} from '../store/actions/repositoryActions';
+
+function useQuery() {
+  const { search } = useLocation();
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
 
 function Repository() {
   const dispatch = useDispatch();
-  const { id } = useParams();
-  const { teamLoading, singleTeamData } = useSelector((state) => state.team);
+  const query = useQuery();
+  const repositoryId = query.get('repository');
+  const folderId = query.get('root');
+  const { repositoryLoading, singleRepositoryData } = useSelector(
+    (state) => state.repository
+  );
+  const { folderLoading, folder } = useSelector((state) => state.folder);
 
   useEffect(() => {
-    dispatch(fetchSingleTeam(id));
-  }, [dispatch, id]);
+    dispatch(fetchSingleRepository(repositoryId));
+    dispatch(fetchFolder(folderId));
+  }, [dispatch, repositoryId, folderId]);
+
+  console.log(folder);
 
   return (
     <div>
@@ -25,7 +42,8 @@ function Repository() {
       <div className='w-full flex flex-row flex-grow'>
         <Sidebar />
         <div className='w-full px-12 pt-12'>
-          {teamLoading ? (
+          <h1>{repositoryLoading ? 'title' : singleRepositoryData.title}</h1>
+          {folderLoading ? (
             <div className='flex items-center justify-center'>
               <svg
                 className='mx-3 h-5 w-5 animate-spin'
@@ -41,8 +59,13 @@ function Repository() {
               </svg>
             </div>
           ) : (
-            <BaseCard main={true} data={singleTeamData} />
+            <BaseCard main={true} data={folder} />
           )}
+          {!folder.folders || folder.folders.length === 0
+            ? null
+            : folder.folders.map((folder) => (
+                <BaseCard firstSection={true} data={folder} />
+              ))}
         </div>
       </div>
       <Footer />
