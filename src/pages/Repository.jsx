@@ -65,7 +65,7 @@ function Repository() {
       <div className='w-full flex flex-row grow'>
         <Sidebar navigation={navigation} />
         <div className='w-full px-12 pt-12'>
-          <h1>{singleRepositoryData.title || 'Repository Name'}</h1>
+          <h1>{'Repository Name' || singleRepositoryData.title}</h1>
           {folderLoading ? (
             <div className='flex items-center justify-center'>
               <svg
