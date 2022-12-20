@@ -44,6 +44,7 @@ export const folderReducer = (
   state = {
     folderLoading: false,
     folder: {},
+    document: {},
     error: null,
   },
   action
@@ -56,7 +57,8 @@ export const folderReducer = (
       return {
         folderLoading: false,
         error: null,
-        folder: action.payload,
+        document: action.payload.document,
+        folder: action.payload.data,
       };
     }
     default:

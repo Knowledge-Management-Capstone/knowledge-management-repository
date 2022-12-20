@@ -1,11 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+
+import { fetchFolderByDocumentId } from '../store/actions/repositoryActions';
+
 import NavigationBar from '../components/common/NavigationBar';
 import BaseBreadcrumbs from '../components/generic/breadcrumbs/BaseBreadcrumbs';
 import DocViewer, { DocViewerRenderers } from 'react-doc-viewer';
 
 function FileDetail() {
+  const dispatch = useDispatch();
+  const { id } = useParams();
+
+  const { folder, document, folderLoading } = useSelector(
+    (state) => state.folder
+  );
+
+  console.log(document.url);
+
+  useEffect(() => {
+    dispatch(fetchFolderByDocumentId(id));
+  }, [dispatch, id]);
+
   const docs = [
-    { uri: require('../example_files/kalender_akademik.pdf') }, // Local File
+    {
+      uri: folderLoading ? null : document.url,
+    },
   ];
 
   return (
