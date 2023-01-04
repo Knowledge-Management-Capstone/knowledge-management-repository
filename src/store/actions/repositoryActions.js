@@ -5,6 +5,7 @@ import {
   FETCH_SINGLE_REPOSITORY,
   FETCH_FOLDER,
   LOADING_FOLDER,
+  FETCH_FOLDER_FROM_DOCUMENT,
 } from '../constants/repositoryConstants';
 
 export const fetchRepository = (searchText) => async (dispatch) => {
@@ -54,6 +55,9 @@ export const fetchFolderByDocumentId = (documentId) => async (dispatch) => {
 
     const document = data.documents.filter((doc) => doc._id === documentId);
 
-    dispatch({ type: FETCH_FOLDER, payload: { data, document: document[0] } });
+    dispatch({
+      type: FETCH_FOLDER_FROM_DOCUMENT,
+      payload: { data, document: document[0] },
+    });
   } catch (error) {}
 };

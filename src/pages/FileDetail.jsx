@@ -7,27 +7,21 @@ import { fetchFolderByDocumentId } from '../store/actions/repositoryActions';
 
 import NavigationBar from '../components/common/NavigationBar';
 import BaseBreadcrumbs from '../components/generic/breadcrumbs/BaseBreadcrumbs';
-import DocViewer, { DocViewerRenderers } from 'react-doc-viewer';
+import DocViewer, { DocViewerRenderers } from '@cyntler/react-doc-viewer';
 
 function FileDetail() {
-  const dispatch = useDispatch();
   const { id } = useParams();
+  const dispatch = useDispatch();
 
-  const { folder, document, folderLoading } = useSelector(
+  const { folderLoading, folder, document } = useSelector(
     (state) => state.folder
   );
-
-  console.log(document.url);
 
   useEffect(() => {
     dispatch(fetchFolderByDocumentId(id));
   }, [dispatch, id]);
 
-  const docs = [
-    {
-      uri: folderLoading ? null : document.url,
-    },
-  ];
+  const docs = [{ uri: require('../example_files/kalender_akademik.pdf') }];
 
   return (
     <div>
@@ -35,7 +29,16 @@ function FileDetail() {
       <div className='flex flex-col p-12'>
         <BaseBreadcrumbs />
         <div className='self-center w-[90%]'>
-          <DocViewer pluginRenderers={DocViewerRenderers} documents={docs} />
+          <DocViewer
+            pluginRenderers={DocViewerRenderers}
+            documents={docs}
+            config={{
+              pdfZoom: {
+                defaultZoom: 0.7, // 1 as default,
+                zoomJump: 0.2, // 0.1 as default,
+              },
+            }}
+          />
         </div>
       </div>
     </div>
