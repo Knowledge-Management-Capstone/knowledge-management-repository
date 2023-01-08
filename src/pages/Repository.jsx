@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import NavigationBar from '../components/common/NavigationBar';
@@ -8,16 +8,7 @@ import Sidebar from '../components/common/Sidebar';
 import BaseCard from '../components/generic/card/BaseCard';
 import Footer from '../components/common/Footer';
 
-import {
-  fetchFolder,
-  fetchSingleRepository,
-} from '../store/actions/repositoryActions';
-
-function useQuery() {
-  const { search } = useLocation();
-
-  return React.useMemo(() => new URLSearchParams(search), [search]);
-}
+import { fetchFolder } from '../store/actions/repositoryActions';
 
 const dataToNavigation = (data) => {
   if (Object.keys(data).length === 0) {
@@ -44,17 +35,15 @@ const dataToNavigation = (data) => {
 
 function Repository() {
   const dispatch = useDispatch();
-  const query = useQuery();
-  const repositoryId = query.get('repository');
-  const folderId = query.get('root');
+  const { id } = useParams();
 
-  const { singleRepositoryData } = useSelector((state) => state.repository);
-  const { folderLoading, folder } = useSelector((state) => state.folder);
+  const { folderLoading, folder, repository } = useSelector(
+    (state) => state.folder
+  );
 
   useEffect(() => {
-    dispatch(fetchSingleRepository(repositoryId));
-    dispatch(fetchFolder(folderId));
-  }, [dispatch, repositoryId, folderId]);
+    dispatch(fetchFolder(id));
+  }, [dispatch, id]);
 
   const navigation = dataToNavigation(folder);
   let idSection = 0;
@@ -65,7 +54,11 @@ function Repository() {
       <div className='w-full h-full flex flex-row grow'>
         <Sidebar navigation={navigation} />
         <div className='w-full h-full px-12 pt-12 pb-36'>
-          <h1>{'Repository Name' || singleRepositoryData.title}</h1>
+          {folderLoading ? (
+            <h1 className='text-4xl font-bold mb-12'>Repository Name</h1>
+          ) : (
+            <h1 className='text-4xl font-bold mb-12'>{repository.title}</h1>
+          )}
           {folderLoading ? (
             <div className='flex items-center justify-center'>
               <svg
