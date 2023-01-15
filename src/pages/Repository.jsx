@@ -24,7 +24,7 @@ const dataToNavigation = (data) => {
 
   for (let i = 0; i < data.folders.length; i++) {
     navigation.push({
-      name: data.folders[0].name,
+      name: data.folders[0 + i].name,
       href: `#section-${i + 1}`,
       current: false,
     });
@@ -48,6 +48,8 @@ function Repository() {
   const navigation = dataToNavigation(folder);
   let idSection = 0;
 
+  console.log(folder);
+
   return (
     <div className='flex flex-col grow min-h-screen'>
       <NavigationBar />
@@ -56,9 +58,9 @@ function Repository() {
         <div className='w-full h-full px-12 pt-12 pb-36'>
           {folderLoading ? (
             <h1 className='text-4xl font-bold mb-12'>Repository Name</h1>
-          ) : (
+          ) : repository ? (
             <h1 className='text-4xl font-bold mb-12'>{repository.title}</h1>
-          )}
+          ) : null}
           {folderLoading ? (
             <div className='flex items-center justify-center'>
               <svg

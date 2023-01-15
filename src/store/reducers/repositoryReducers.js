@@ -61,7 +61,7 @@ export const folderReducer = (
         error: null,
         folder: action.payload,
         repository: action.payload.repositories
-          ? action.payload.repositories
+          ? action.payload.repositories[0]
           : {},
       };
     }

@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { ChevronRightIcon } from '@heroicons/react/solid';
 import DocViewer, { DocViewerRenderers } from '@cyntler/react-doc-viewer';
 
 import { fetchFolderByDocumentId } from '../store/actions/repositoryActions';
 
 import NavigationBar from '../components/common/NavigationBar';
 import BaseBreadcrumbs from '../components/generic/breadcrumbs/BaseBreadcrumbs';
-import { ChevronRightIcon } from '@heroicons/react/solid';
+import SimpleFileDetail from '../components/generic/filedetail/SimpleFileDetail';
 
 function FileDetail() {
   const [file, setFile] = useState('');
@@ -21,6 +22,7 @@ function FileDetail() {
   const url = document ? document.url : null;
   const parents = folder.parents || [];
   const rootName = folder.name;
+  const references = document ? document.references : null;
 
   useEffect(() => {
     dispatch(fetchFolderByDocumentId(id));
@@ -59,11 +61,15 @@ function FileDetail() {
             ...parents
               .sort((a, b) => b.level - a.level)
               .map(({ _id, name }) => ({
-                location: name,
-                redirect: `/documentation/${_id}`,
+                name,
+                redirect: `/repository/${_id}`,
                 current: false,
               })),
-            { name: rootName, redirect: '#', current: true },
+            {
+              name: rootName,
+              redirect: `/repository/${folder._id}`,
+              current: true,
+            },
           ]}
           separator={ChevronRightIcon}
         />
@@ -80,6 +86,21 @@ function FileDetail() {
               },
             }}
           />
+        </div>
+      </div>
+      <div className='flex flex-col'>
+        <div className='self-center w-[90%]'>
+          <h1 className='text-3xl text-blue-400 my-8 font-bold'>
+            Daftar Dokumen Referensi:
+          </h1>
+          <div className='reference-list'>
+            <div className='grid grid-cols-2 gap-2'>
+              {references &&
+                references.map((reference) => (
+                  <SimpleFileDetail data={reference} />
+                ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

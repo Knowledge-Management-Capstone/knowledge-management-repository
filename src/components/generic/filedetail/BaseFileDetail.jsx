@@ -9,7 +9,6 @@ import {
 } from '@heroicons/react/outline';
 
 function BaseFileDetail({ data }) {
-  console.log(data);
   const date = data.updatedAt.split('T')[0];
   let authors = data.authors.map((author) => author.fullName);
   if (authors.length > 1) {
